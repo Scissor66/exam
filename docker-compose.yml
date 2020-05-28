@@ -41,7 +41,7 @@ services:
     - ./nginx:/etc/nginx/conf.d
   web:
     build: .
-    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: python manage.py runserver 0.0.0.0:8000
     restart: on-failure:3
     expose:
       - 8000
