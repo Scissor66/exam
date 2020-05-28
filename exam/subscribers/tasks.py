@@ -1,7 +1,7 @@
 import logging
 
 from exam.celery_app import celery_app
-from exam.model.subscriber import Subscriber
+from exam.subscribers.models import Subscriber
 
 log = logging.getLogger(__name__)
 

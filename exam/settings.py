@@ -8,7 +8,7 @@ SECRET_KEY = '*-)=f5d29321%h%(rij+=8qltag%swl$(mhq4dbre@+--d-het'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'proxy']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -19,7 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'exam',
+    'exam.subscribers',
     'rest_framework',
 ]
 

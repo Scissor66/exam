@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 
-from exam.api.subscriber import ping, subscriber_status, add, substract
+from exam.subscribers.api import ping, subscriber_status, add, substract
 
 
 api_urlpatterns = [

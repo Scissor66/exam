@@ -6,17 +6,17 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from exam.api.serialization import CommonRequest, CommonResponse
-from exam.model.subscriber import Subscriber, SubscriberException
+from exam.subscribers.serialization import CommonRequest, CommonResponse
+from exam.subscribers.models import Subscriber, SubscriberException
 
 log = logging.getLogger(__name__)
 
-CommonResponseData = namedtuple(
-    'CommonResponseData',
+ResponseData = namedtuple(
+    'ResponseData',
     ('result', 'status', 'description', 'addition'),
 )
 
-AdditionResponseData = namedtuple('AdditionResponseData', ('balance', 'status'))
+AdditionData = namedtuple('AdditionData', ('balance', 'status'))
 
 
 def _create_response(response_data):
@@ -24,9 +24,9 @@ def _create_response(response_data):
 
 
 def _create_response_data(result=True, status=status.HTTP_200_OK, description=None, subscriber=None):
-    return CommonResponseData(
+    return ResponseData(
         result=result, status=status, description=description,
-        addition=(AdditionResponseData(balance=subscriber.balance, status=subscriber.status)
+        addition=(AdditionData(balance=subscriber.balance, status=subscriber.status)
                   if subscriber else None),
     )
 

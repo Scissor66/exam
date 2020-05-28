@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 
 
 class SubscriberException(Exception):
@@ -32,6 +32,7 @@ class Subscriber(models.Model):
             raise SubscriberException('Subscriber is not found')
         return subscriber
 
+    @transaction.atomic
     def add(self, amount):
         self._check_amount(amount)
         self._check_status()
@@ -39,6 +40,7 @@ class Subscriber(models.Model):
         self.balance += amount
         self.save()
 
+    @transaction.atomic
     def substract(self, amount):
         self._check_amount(amount)
         self._check_status()
@@ -48,6 +50,7 @@ class Subscriber(models.Model):
         self.hold = 0
         self.save()
 
+    @transaction.atomic
     def unhold(self):
         self._check_status()
         self._check_substraction_is_possible(0)

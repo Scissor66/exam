@@ -7,6 +7,7 @@ services:
   postgres:
     image: postgres
     restart: on-failure:3
+    # TODO: mount data files
     networks:
       common:
         aliases:
@@ -41,7 +42,7 @@ services:
     - ./nginx/conf.d:/etc/nginx/conf.d
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: bash -c "GUNICORN_CMD_ARGS='--bind=0.0.0.0' gunicorn exam.wsgi"
     restart: on-failure:3
     expose:
       - 8000
@@ -53,6 +54,7 @@ services:
       - postgres
   celery:
     build: .
+    # TODO: after mounting data files remove migrate
     command: bash -c "python manage.py migrate && celery -A exam worker -B"
     restart: on-failure:3
     networks:

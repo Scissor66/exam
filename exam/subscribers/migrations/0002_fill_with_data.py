@@ -4,11 +4,11 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('exam', '0001_initial'),
+        ('subscribers', '0001_initial'),
     ]
 
     def _insert_data(apps, schema_editor):
-        Subscriber = apps.get_model('exam', 'Subscriber')
+        Subscriber = apps.get_model('subscribers', 'Subscriber')
         subs1 = Subscriber(
             uuid='26c940a1-7228-4ea2-a3bc-e6460b172040',
             name='Петров Иван Сергеевич', balance=1700, hold=300, status=True,
