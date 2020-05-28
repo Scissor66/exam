@@ -1,0 +1,62 @@
+version: '3'
+
+networks:
+  common:
+
+services:
+  postgres:
+    image: postgres
+    restart: on-failure:3
+    networks:
+      common:
+        aliases:
+          - postgres
+    expose:
+      - 5432
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+  redis:
+    image: redis
+    restart: on-failure:3
+    networks:
+      common:
+        aliases:
+          - redis
+    expose:
+      - 6379
+  nginx:
+    image: nginx
+    restart: on-failure:3
+    networks:
+      common:
+        aliases:
+          - proxy
+    links:
+      - web
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+    - ./nginx:/etc/nginx/conf.d
+  web:
+    build: .
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    restart: on-failure:3
+    expose:
+      - 8000
+    networks:
+      common:
+        aliases:
+          - web
+    depends_on:
+      - postgres
+  celery:
+    build: .
+    command: bash -c "python manage.py migrate && celery -A exam worker -B"
+    restart: on-failure:3
+    networks:
+      - common
+    depends_on:
+      - redis
+      - postgres
