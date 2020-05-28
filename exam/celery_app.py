@@ -16,7 +16,7 @@ clog = logging.getLogger('celery')
 celery_app.conf.beat_schedule = {
     'unhold': {
         'task': 'exam.tasks.subscriber.unhold_task',
-        'schedule': crontab(minute='*/1'),
+        'schedule': crontab(minute='*/10'),
     },
 }
 
