@@ -35,8 +35,8 @@ def subscriber_router(processor):
     def wrapper(request):
         try:
             request_data = CommonRequest().load(request.data)
-            subscriber = Subscriber.find_by_uuid(request_data['addition']['uuid'])
-            return processor(request_data, subscriber)
+            subscriber_uuid = request_data['addition']['uuid']
+            return processor(request_data, subscriber_uuid)
         except (ValidationError, SubscriberException) as e:
             log.exception('Bad request')
             response_data = _create_response_data(
@@ -61,22 +61,25 @@ def ping(request):
 
 @api_view(('POST',))
 @subscriber_router
-def subscriber_status(request_data, subscriber):
+def subscriber_status(request_data, subscriber_uuid):
+    subscriber = Subscriber.find(subscriber_uuid)
     response_data = _create_response_data(subscriber=subscriber)
     return _create_response(response_data)
 
 
 @api_view(('POST',))
 @subscriber_router
-def add(request_data, subscriber):
-    subscriber.add(request_data['addition'].get('amount'))
+def add(request_data, subscriber_uuid):
+    amount = request_data['addition'].get('amount')
+    subscriber = Subscriber.add(uuid=subscriber_uuid, amount=amount)
     response_data = _create_response_data(subscriber=subscriber)
     return _create_response(response_data)
 
 
 @api_view(('POST',))
 @subscriber_router
-def substract(request_data, subscriber):
-    subscriber.substract(request_data['addition'].get('amount'))
+def substract(request_data, subscriber_uuid):
+    amount = request_data['addition'].get('amount')
+    subscriber = Subscriber.substract(uuid=subscriber_uuid, amount=amount)
     response_data = _create_response_data(subscriber=subscriber)
     return _create_response(response_data)

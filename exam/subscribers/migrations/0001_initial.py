@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='Subscriber',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', models.UUIDField(db_index=True)),
+                ('uuid', models.UUIDField(unique=True)),
                 ('name', models.CharField(help_text='ФИО абонента', max_length=1000)),
                 ('balance', models.IntegerField(help_text='Текущий баланс на счете')),
                 ('hold', models.IntegerField(help_text='Холды на счете')),
